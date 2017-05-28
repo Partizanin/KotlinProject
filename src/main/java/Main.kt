@@ -1,16 +1,23 @@
 import javafx.scene.control.Button
+import javafx.scene.control.Tooltip
 import tornadofx.*
+import java.time.Duration
 import java.util.*
+import kotlin.concurrent.timerTask
 
 /**
  * Created by Partizanin on 27.05.2017 23:18:36.
  */
 class Main : View("My View") {
     var list: List<Button>? = null
+    var tt: Tooltip? = null
 
     override val root = anchorpane {
         prefWidth = 100.0
         prefHeight = 100.0
+        stylesheets.add("styles.css")
+        resize(0.0, 0.0)
+
 //        isResizable = false
     }
 
@@ -209,30 +216,29 @@ class Main : View("My View") {
 
             list = listOf(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16)
 
+            tt = tooltip {
+                isAutoHide = true
+                text = "Ви вийграли!"
+                styleClass.add("tooltipInfo")
+                timerTask { Duration.ofSeconds(3) }
+            }
 //            newGame()
         }
     }
 
     fun isWin(): Boolean {
-        var isWin = true
-
-        for (i in 1..list!!.size-1) {
-            if (list!![i-1].text.toInt() != i) {
-                isWin = false
-                println(isWin)
-                break
-            }
-        }
+        val isWin = (1..list!!.size - 1).none { list!![it - 1].text.toInt() != it }
 
         return isWin
     }
+
     private fun newGame() {
         val shuffleNumbers = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15).toMutableList()
 
         shuffle(shuffleNumbers)
 
         for (index in 0..14) {
-            (list as List<Button>)[index].text = shuffleNumbers[index].toString()
+            list!![index].text = shuffleNumbers[index].toString()
         }
     }
 
@@ -256,14 +262,14 @@ class Main : View("My View") {
         }
 
         if (isWin()) {
-            root.isDisable = true
+//            root.isDisable = true
+            tt!!.show(currentWindow)
         }
     }
 
     private fun getHiddenButton(): Button {
 
-        list!!.filterNot { it.isVisible }
-                .forEach { return it }
+        list!!.filterNot { it.isVisible }.forEach { return it }
 
         return button {}
     }

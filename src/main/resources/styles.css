@@ -1,0 +1,13 @@
+.tooltipError{
+    -fx-text-fill: red;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.tooltipInfo{
+    -fx-text-fill: chartreuse;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.date {
+    -fx-border-color: red;
+}
