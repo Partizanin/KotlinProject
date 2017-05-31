@@ -1,5 +1,6 @@
 import javafx.scene.control.Button
 import javafx.scene.layout.AnchorPane
+import javafx.stage.Stage
 import tornadofx.*
 import java.util.*
 
@@ -30,6 +31,7 @@ class MyView : View("My View") {
 
 
     init {
+        (currentWindow as Stage).isResizable = false
         b15.isVisible = false
         for (button in list) {
             button.setOnAction { click(button) }
